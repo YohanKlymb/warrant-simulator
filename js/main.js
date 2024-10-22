@@ -836,7 +836,7 @@ function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitio
     // Adjust layout margin for large and small screens
     if (!("margin" in layout)) {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 50 };
+        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 10 };
     }
 
     // Ensure transition options are in the layout for smooth updates
@@ -1112,9 +1112,9 @@ function initializeInputs() {
             } else if (input.name === 'exercise_price') {
                 input.value = '2.00';
             } else if (input.name === 'number_of_warrants') {
-                input.value = '10,000';
+                input.value = '10k';
             } else if (input.name === 'amount_of_warrants') {
-                input.value = '20,000';
+                input.value = '20k';
             } else if (input.name === 'floor_price') {
                 input.value = '1.50';
             } else if (input.name === 'cap_price') {
