@@ -1100,6 +1100,7 @@ function initializeInputs() {
     // Set initial values for all inputs to display the app result
     const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
+        console.log(input.name)
         if (input.type === 'number' || input.type === 'text') {
             // Set default values here
             if (input.name === 'current_ownership') {
