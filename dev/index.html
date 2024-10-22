@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equity and Warrant Simulator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <style>
+        .result-container {
+            box-sizing: content-box;
+            min-height: 2500px; /* Adjust to a large enough value to accommodate your content */
+        }
+        .warning-container {
+            background-color: #ffaaaa;
+            border: 2px solid #ffcaca;
+            border-radius: 10px;
+            width: 99%;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .warning-container.show {
+            display: block;
+        }
+        .input-error {
+            border-color: red !important;
+        }
+        .cards-container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .card.show {
+            display: block;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 100%;
+            box-sizing: content-box;
+        }
+        .chart {
+            width: 700px;
+            box-sizing: content-box;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            min-height: 400px;
+            margin: 0 3px 20px;
+            box-shadow: 1px 3px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Segmented button styles */
+        .segmented-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .segmented-button {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+        }
+        .segmented-button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .scenario-results-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Scenario table */
+    .scenario-results-table th, .scenario-results-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .scenario-results-table th {
+        background-color: #f2f2f2;
+        text-align: center;
+    }
+
+    .scenario-results-table td {
+        text-align: center;
+    }
+
+    @media screen and (max-width: 600px) {
+        .scenario-results-table {
+            font-size: 12px; /* Adjust table font size for mobile */
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Equity and Warrant Simulator</h1>
+        <p>Analyze how your ownership and valuation will change with different financing structures.</p>
+        <hr>
+        <h2>Enter Key Information</h2>
+        <form id="Warrant-Form">
+            <div class="form-group">
+                <label for="current_ownership">Current Ownership (%)</label>
+                <input type="text" id="current_ownership" name="current_ownership" placeholder="40%" class="percentage-input">
+            </div>
+            <div class="form-group">
+                <label for="number_of_shares">Total number of Shares</label>
+                <input type="text" id="number_of_shares" name="number_of_shares" placeholder="1,000,000" class="number-input input-k">
+            </div>
+            <div class="form-group">
+                <label for="amount_to_raise">Next equity round</label>
+                <input type="text" id="amount_to_raise" name="amount_to_raise" placeholder="5m" class="number-input input-m">
+            </div>
+            <div class="form-group">
+                <label for="pre_money_valuation">Pre-Money Valuation</label>
+                <input type="text" id="pre_money_valuation" name="pre_money_valuation" placeholder="20m" class="number-input input-m">
+            </div>
+
+            <!-- Segmented buttons for warrant type selection -->
+            <div class="segmented-button-container">
+                <div id="fixedPriceButton" class="segmented-button active">Fixed Price</div>
+                <div id="floorCapButton" class="segmented-button">Floor & Cap Price</div>
+            </div>
+
+            <!-- Fixed Price Input -->
+            <div id="fixedPriceInput" class="form-group" style="display: block;">
+                <label for="exercise_price">Exercise Price</label>
+                <input type="text" id="exercise_price" name="exercise_price" placeholder="2.00" class="number-input">
+            </div>
+
+            <!-- Floor/Cap Price Inputs -->
+            <div id="floorCapInput" class="form-group" style="display: block;">
+                <label for="floor_price">Floor Price</label>
+                <input type="text" id="floor_price" name="floor_price" placeholder="1.50" class="number-input">
+                
+                <label for="cap_price">Cap Price</label>
+                <input type="text" id="cap_price" name="cap_price" placeholder="3.00" class="number-input">
+                
+                <label for="discount_price">Discount Price (%)</label>
+                <input type="text" id="discount_price" name="discount_price" placeholder="10%" class="percentage-input">
+            </div>
+
+            <div class="form-group">
+                <label for="number_of_warrants">Number of Warrants</label>
+                <input type="text" id="number_of_warrants" name="number_of_warrants" placeholder="50,000" class="number-input">
+            </div>
+            <div class="form-group">
+                <label for="amount_of_warrants">Warrants amount</label>
+                <input type="text" id="amount_of_warrants" name="amount_of_warrants" placeholder="500k" class="number-input input-k">
+            </div>
+        </form>
+
+        <div class="warning-container" id="warrantExerciseWarning">
+            The warrant exercise price is higher than the price per share of the equity round. The warrant may not be exercised.
+        </div>
+    </div>
+
+    <div class="result-container" id="result-container">
+        <!-- <div class="cards-container">
+            <div class="card show">
+                <div class="card-title">Price Per Share</div>
+                <div id="pricePerShare" class="card-value"></div>
+            </div>
+            <div class="card show">
+                <div class="card-title">Number of New Shares</div>
+                <div id="newSharesIssued" class="card-value"></div>
+            </div>
+            <div class="card show">
+                <div class="card-title">Founder Ownership After</div>
+                <div id="founderOwnershipAfter" class="card-value"></div>
+            </div>
+            <div class="card show">
+                <div class="card-title">Post-Money Valuation</div>
+                <div id="postMoneyValuation" class="card-value"></div>
+            </div>
+        </div> -->
+
+        <h2>Financial Overview</h2>
+        <div id="chart-container" class="chart-container">
+            <div class="chart-section show" id="ownershipDilutionChartContainer">
+                <div class="chart" id="ownershipDilutionChart"></div>
+            </div>
+            <div class="chart-section show" id="valuationWaterfallChartContainer">
+                <div class="chart" id="valuationWaterfallChart"></div>
+            </div>
+            <div class="chart-section show" id="valuationVsDilutionChartContainer">
+                <div class="chart" id="valuationVsDilutionChart"></div>
+            </div>
+            <div class="chart-section show" id="newSharesIssuedChartContainer">
+                <div class="chart" id="newSharesIssuedChart"></div>
+            </div>
+        </div>
+
+        <h2>Detailed analysis</h2>
+        <div class="scenario-table">
+            <!-- Column Headers -->
+            <div class="big-block"></div>
+            <div class="big-block"><h3>Pessimistic</h3></div>
+            <div class="big-block"><h3>Base</h3></div>
+            <div class="big-block"><h3>Optimistic</h3></div>
+        
+            <!-- Pre-Money Valuation -->
+            <div class="grid-label"><h4>Pre-Money Valuation</h4></div>
+            <div class="grid-block" id="preMoneyValuation-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="preMoneyValuation-Base"><h2></h2></div>
+            <div class="grid-block" id="preMoneyValuation-Optimistic"><h2></h2></div>
+        
+            <!-- Initial Number of Shares -->
+            <div class="grid-label"><h4>Initial Number of Shares</h4></div>
+            <div class="grid-block" id="initialNumberOfShares-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="initialNumberOfShares-Base"><h2></h2></div>
+            <div class="grid-block" id="initialNumberOfShares-Optimistic"><h2></h2></div>
+        
+            <!-- Founder Ownership Before -->
+            <div class="grid-label"><h4>Founder Ownership Before</h4></div>
+            <div class="grid-block" id="founderOwnershipBefore-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="founderOwnershipBefore-Base"><h2></h2></div>
+            <div class="grid-block" id="founderOwnershipBefore-Optimistic"><h2></h2></div>
+        
+            <!-- Amount Raised -->
+            <div class="grid-label"><h4>Amount Raised</h4></div>
+            <div class="grid-block" id="amountRaised-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="amountRaised-Base"><h2></h2></div>
+            <div class="grid-block" id="amountRaised-Optimistic"><h2></h2></div>
+        
+            <!-- New Shares Issued -->
+            <div class="grid-label"><h4>New Shares Issued</h4></div>
+            <div class="grid-block" id="newSharesIssued-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="newSharesIssued-Base"><h2></h2></div>
+            <div class="grid-block" id="newSharesIssued-Optimistic"><h2></h2></div>
+        
+            <!-- Price Per Share -->
+            <div class="grid-label"><h4>Price Per Share</h4></div>
+            <div class="grid-block" id="pricePerShare-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="pricePerShare-Base"><h2></h2></div>
+            <div class="grid-block" id="pricePerShare-Optimistic"><h2></h2></div>
+        
+            <!-- Warrant Amount -->
+            <div class="grid-label"><h4>Warrant Amount</h4></div>
+            <div class="grid-block" id="warrantAmount-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="warrantAmount-Base"><h2></h2></div>
+            <div class="grid-block" id="warrantAmount-Optimistic"><h2></h2></div>
+        
+            <!-- Warrants Issued -->
+            <div class="grid-label"><h4>Warrants Issued</h4></div>
+            <div class="grid-block" id="warrantsIssued-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="warrantsIssued-Base"><h2></h2></div>
+            <div class="grid-block" id="warrantsIssued-Optimistic"><h2></h2></div>
+        
+            <!-- Warrant Exercise Price -->
+            <div class="grid-label"><h4>Warrant Exercise Price</h4></div>
+            <div class="grid-block" id="warrantExercisePrice-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="warrantExercisePrice-Base"><h2></h2></div>
+            <div class="grid-block" id="warrantExercisePrice-Optimistic"><h2></h2></div>
+        
+            <!-- Post-Money Valuation -->
+            <div class="grid-label"><h4>Post-Money Valuation</h4></div>
+            <div class="grid-block" id="postMoneyValuation-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="postMoneyValuation-Base"><h2></h2></div>
+            <div class="grid-block" id="postMoneyValuation-Optimistic"><h2></h2></div>
+        
+            <!-- Dilution From Fundraising -->
+            <div class="grid-label"><h4>Dilution From Fundraising</h4></div>
+            <div class="grid-block" id="dilutionFromFundraising-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="dilutionFromFundraising-Base"><h2></h2></div>
+            <div class="grid-block" id="dilutionFromFundraising-Optimistic"><h2></h2></div>
+        
+            <!-- Dilution From Warrants -->
+            <div class="grid-label"><h4>Dilution From Warrants</h4></div>
+            <div class="grid-block" id="dilutionFromWarrants-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="dilutionFromWarrants-Base"><h2></h2></div>
+            <div class="grid-block" id="dilutionFromWarrants-Optimistic"><h2></h2></div>
+        
+            <!-- Founder Ownership After -->
+            <div class="grid-label"><h4>Founder Ownership After</h4></div>
+            <div class="grid-block" id="founderOwnershipAfter-Pessimistic"><h2></h2></div>
+            <div class="grid-block" id="founderOwnershipAfter-Base"><h2></h2></div>
+            <div class="grid-block" id="founderOwnershipAfter-Optimistic"><h2></h2></div>
+        </div>
+        
+        
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
