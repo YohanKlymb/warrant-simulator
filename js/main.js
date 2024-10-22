@@ -836,7 +836,7 @@ function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitio
     // Adjust layout margin for large and small screens
     if (!("margin" in layout)) {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 30 };
+        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 50 };
     }
 
     // Ensure transition options are in the layout for smooth updates
@@ -1001,7 +1001,7 @@ function updateNewSharesIssuedChart(data) {
     const totalSharesAfter = initialNumberOfShares + newSharesIssued + warrantsIssued;
 
     // Labels for the chart
-    const labels = ['Founder', 'Existing Shareholders', 'New Equity', 'Warrant Shares'];
+    const labels = ['Founder', 'Existing<br>Shareholders', 'New Equity', 'Warrant Shares'];
 
     // Values for the chart (the four slices)
     const valuesChart = [
@@ -1016,6 +1016,7 @@ function updateNewSharesIssuedChart(data) {
         values: valuesChart,
         labels: labels,
         type: 'pie',
+        rotation: -150,
         textinfo: 'label+percent',
         textposition: 'outside',                  // Keep labels outside the slices
         hoverinfo: 'label+value+percent',
@@ -1058,14 +1059,12 @@ function updateScenarioResultsGrid(scenarioResults) {
             const gridBlock = document.getElementById(gridBlockId);
             console.log(gridBlockId, value)
             if (gridBlock) {
+                // Target the existing h2 element directly
                 const h2Element = gridBlock.querySelector('h2');
                 if (h2Element) {
-                    h2Element.textContent = value;
+                    h2Element.textContent = value; // Update the existing h2 element
                 } else {
-                    // If h2 is not found, create it
-                    const newH2 = document.createElement('h2');
-                    newH2.textContent = value;
-                    gridBlock.appendChild(newH2);
+                    console.warn(`h2 element not found in grid block with ID "${gridBlockId}".`);
                 }
             } else {
                 console.warn(`Grid block with ID "${gridBlockId}" not found.`);
@@ -1100,7 +1099,6 @@ function initializeInputs() {
     // Set initial values for all inputs to display the app result
     const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
-        console.log(input.name)
         if (input.type === 'number' || input.type === 'text') {
             // Set default values here
             if (input.name === 'current_ownership') {
@@ -1114,9 +1112,9 @@ function initializeInputs() {
             } else if (input.name === 'exercise_price') {
                 input.value = '2.00';
             } else if (input.name === 'number_of_warrants') {
-                input.value = '50,000';
+                input.value = '10,000';
             } else if (input.name === 'amount_of_warrants') {
-                input.value = '100,000';
+                input.value = '20,000';
             } else if (input.name === 'floor_price') {
                 input.value = '1.50';
             } else if (input.name === 'cap_price') {
