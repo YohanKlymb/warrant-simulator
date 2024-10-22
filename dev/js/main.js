@@ -889,6 +889,9 @@ function updateValuationWaterfallChart(data) {
             showticklabels: false, 
             automargin: false,
         },
+        xaxis: {
+            tickfont: {size: 11}
+        }
     };
 
     renderOrUpdatePlot('valuationWaterfallChart', [trace], layout);
@@ -932,6 +935,9 @@ function updateOwnershipDilutionChart(data) {
             showticklabels: false, 
             automargin: false,
         },
+        xaxis: {
+            tickfont: {size: 11}
+        }
     };
 
     renderOrUpdatePlot('ownershipDilutionChart', [trace], layout);
