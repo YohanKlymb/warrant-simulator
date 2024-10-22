@@ -862,7 +862,7 @@ function updateValuationWaterfallChart(data) {
         type: 'waterfall',
         orientation: 'v',
         measure: ['absolute', 'relative', 'relative', 'total'],
-        x: ['Pre-Money Valuation', 'Equity Round', 'Warrant Exercise', 'Post-Money Valuation'],
+        x: ['Pre-Money', 'Equity Round', 'Warrant Exercise', 'Post-Money'],
         y: [preMoneyValuation, amountRaised, warrantAmount, postMoneyValuation],
         text: [
             formatToCurrency(preMoneyValuation, 0, true),
@@ -1063,7 +1063,7 @@ function updateScenarioResultsGrid(scenarioResults) {
             const gridBlockId = `${metricKey}-${scenarioName}`;
             // Select the grid-block
             const gridBlock = document.getElementById(gridBlockId);
-            console.log(gridBlockId, value)
+
             if (gridBlock) {
                 // Target the existing h2 element directly
                 const h2Element = gridBlock.querySelector('h2');
@@ -1184,7 +1184,6 @@ function updateResults() {
 
         const scenarioResults = computeScenarios(values);
         const baseScenario = scenarioResults.find(scenario => scenario.name === "Base");
-        console.log(baseScenario)
 
         // Check if warrant would probably not be exercised
         if (baseScenario.exercisePrice >= baseScenario.pricePerShare) {
