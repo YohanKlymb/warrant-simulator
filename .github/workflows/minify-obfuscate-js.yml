@@ -1,0 +1,52 @@
+name: Minify and Obfuscate JavaScript
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write  # Ensure the token has write permissions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install terser javascript-obfuscator -g
+
+    - name: Minify JavaScript
+      run: terser js/main.js -o js/main.minified.js
+
+    - name: Obfuscate JavaScript
+      run: javascript-obfuscator js/main.minified.js --output js/main.min.js --compact true --control-flow-flattening true --dead-code-injection false --self-defending true --string-array true --string-array-encoding base64 --string-array-index-shift true
+
+    - name: Set up Git
+      run: |
+        git config --global user.email "yohan@klymb.co"
+        git config --global user.name "YohanKlymb"
+
+    - name: Commit and Push to Public Repo
+      env:
+        PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      run: |
+        mkdir public-repo
+        cd public-repo
+        git init
+        git remote add origin https://YohanKlymb:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/YohanKlymb/warrant-simulator-public.git
+        git pull origin main --allow-unrelated-histories # Pull the remote main branch to avoid conflicts
+        mkdir -p js  # Ensure js directory is created
+        cp ../js/main.min.js js/
+        git add js/main.min.js
+        git commit -m "Update minified and obfuscated JavaScript file"
+        git branch -M main
+        git push -u origin main

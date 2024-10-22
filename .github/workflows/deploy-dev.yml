@@ -1,0 +1,29 @@
+name: Deploy Dev Branch to GitHub Pages
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: write  # Ensure the GITHUB_TOKEN has write access
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the 'dev' branch
+      - name: Checkout Dev Branch
+        uses: actions/checkout@v3
+        with:
+          ref: dev
+
+      # Step 3: Deploy to 'gh-pages' branch under 'dev/' directory
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Replace with your build output directory
+          publish_branch: gh-pages
+          destination_dir: dev
