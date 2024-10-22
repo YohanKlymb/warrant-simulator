@@ -1036,6 +1036,7 @@ function updateNewSharesIssuedChart(data) {
     // Step 3: Define the layout for the pie chart
     const layout = {
         showlegend: false,
+        margin: { t: 40, r: 40, b: 40, l: 40 },
     };
 
     // Step 4: Render or update the pie chart using Plotly
