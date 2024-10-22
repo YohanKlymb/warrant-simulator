@@ -1114,6 +1114,8 @@ function initializeInputs() {
                 input.value = '2.00';
             } else if (input.name === 'number_of_warrants') {
                 input.value = '50,000';
+            } else if (input.name === 'amount_of_warrants') {
+                input.value = '100,000';
             } else if (input.name === 'floor_price') {
                 input.value = '1.50';
             } else if (input.name === 'cap_price') {
