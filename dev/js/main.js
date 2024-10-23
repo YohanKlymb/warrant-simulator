@@ -1012,9 +1012,6 @@ function updateNewSharesIssuedChart(data) {
     // Calculate Existing Shareholders (Non-founder shares before any new shares are issued)
     const existingShareholders = initialNumberOfShares - founderShares;
 
-    // Total number of shares after fundraising and warrant exercise
-    const totalSharesAfter = initialNumberOfShares + newSharesIssued + warrantsIssued;
-
     // Labels for the chart
     const labels = ['Founder', 'Other Shareholders', 'New Equity', 'Warrant Shares'];
 
