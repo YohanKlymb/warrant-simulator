@@ -836,7 +836,7 @@ function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitio
     // Adjust layout margin for large and small screens
     if (!("margin" in layout)) {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 20 };
+        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30 };
     }
 
     // Ensure transition options are in the layout for smooth updates
@@ -1075,11 +1075,11 @@ function updateScenarioResultsGrid(scenarioResults) {
 
             if (gridBlock) {
                 // Target the existing h2 element directly
-                const h2Element = gridBlock.querySelector('h2');
-                if (h2Element) {
-                    h2Element.textContent = value; // Update the existing h2 element
+                const pElement = gridBlock.querySelector('p');
+                if (pElement) {
+                    pElement.textContent = value; // Update the existing p element
                 } else {
-                    console.warn(`h2 element not found in grid block with ID "${gridBlockId}".`);
+                    console.warn(`p element not found in grid block with ID "${gridBlockId}".`);
                 }
             } else {
                 console.warn(`Grid block with ID "${gridBlockId}" not found.`);
