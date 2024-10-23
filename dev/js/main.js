@@ -1031,6 +1031,9 @@ function updateNewSharesIssuedChart(data) {
         rotation: -150,
         textinfo: 'label+percent',
         textposition: 'outside',                  // Keep labels outside the slices
+        textfont: {
+            size: 12  // Reduce the font size for the labels
+        },
         hoverinfo: 'label+value+percent',
         insidetextorientation: 'horizontal',      // Ensure labels are horizontal
         marker: {
