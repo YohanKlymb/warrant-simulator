@@ -836,7 +836,7 @@ function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitio
     // Adjust layout margin for large and small screens
     if (!("margin" in layout)) {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30 };
+        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t:10 };
     }
 
     // Ensure transition options are in the layout for smooth updates
