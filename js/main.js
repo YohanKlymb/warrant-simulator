@@ -976,7 +976,7 @@ function updateValuationVsDilutionChart(scenarioResults) {
     const minFounderOwnership = Math.min(...founderOwnerships);
     const maxFounderOwnership = Math.max(...founderOwnerships);
     const yAxisMin = roundToSignificantDigits(Math.max(0, minFounderOwnership - 2));
-    const yAxisMax = roundToSignificantDigits(Math.min(100, maxFounderOwnership)) * 1.1;
+    const yAxisMax = roundToSignificantDigits(Math.min(100, maxFounderOwnership)) * 1.01;
 
     const layout = {
         plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
@@ -990,6 +990,7 @@ function updateValuationVsDilutionChart(scenarioResults) {
             title: '',
             showgrid: false,
             showticklabels: false,
+            automargin: false,
             range: [yAxisMin, yAxisMax]
         },
         hoverlabel: {
