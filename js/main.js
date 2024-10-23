@@ -890,6 +890,7 @@ function updateValuationWaterfallChart(data) {
             showgrid: false,
             showticklabels: false, 
             automargin: false,
+            range: [0, Math.max(preMoneyValuation, postMoneyValuation, amountRaised, warrantAmount) * 1.1]
         },
         xaxis: {
             tickfont: {size: 11}
@@ -938,6 +939,7 @@ function updateOwnershipDilutionChart(data) {
             showgrid: false,
             showticklabels: false, 
             automargin: false,
+            range: [0, founderOwnershipBefore * 1.1]
         },
         xaxis: {
             tickfont: {size: 11}
@@ -974,7 +976,7 @@ function updateValuationVsDilutionChart(scenarioResults) {
     const minFounderOwnership = Math.min(...founderOwnerships);
     const maxFounderOwnership = Math.max(...founderOwnerships);
     const yAxisMin = roundToSignificantDigits(Math.max(0, minFounderOwnership - 2));
-    const yAxisMax = roundToSignificantDigits(Math.min(100, maxFounderOwnership));
+    const yAxisMax = roundToSignificantDigits(Math.min(100, maxFounderOwnership)) * 1.1;
 
     const layout = {
         plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
