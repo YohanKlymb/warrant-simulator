@@ -825,7 +825,7 @@ function computeScenarios(values) {
 //////////////////////////
 
 // Generic method to render or update a Plotly chart with animations
-function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitionOptions = { duration: 750, easing: 'cubic-in-out' }) {
+function renderOrUpdatePlot(chartId, data, layout, onlyRender = true, transitionOptions = { duration: 750, easing: 'cubic-in-out' }) {
 
     // Create config
     var config = {
