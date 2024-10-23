@@ -323,7 +323,7 @@ function handleWarrantTypeChange(selectedType, setFocus = true) {
 
     if (selectedType === 'fixed') {
         // Show fixed price input and hide floor/cap input
-        fixedPriceInput.style.display = 'block';
+        fixedPriceInput.style.display = 'flex';
         floorCapInput.style.display = 'none';
 
         // Focus on the exercise price input
@@ -335,7 +335,7 @@ function handleWarrantTypeChange(selectedType, setFocus = true) {
     } else if (selectedType === 'floor_cap') {
         // Show floor/cap input and hide fixed price input
         fixedPriceInput.style.display = 'none';
-        floorCapInput.style.display = 'block';
+        floorCapInput.style.display = 'flex';
 
         // Focus on the discount price input
         if (setFocus) {
