@@ -1016,7 +1016,7 @@ function updateNewSharesIssuedChart(data) {
     const totalSharesAfter = initialNumberOfShares + newSharesIssued + warrantsIssued;
 
     // Labels for the chart
-    const labels = ['Founder', 'Existing<br>Shareholders', 'New Equity', 'Warrant Shares'];
+    const labels = ['Founder', 'Other Shareholders', 'New Equity', 'Warrant Shares'];
 
     // Values for the chart (the four slices)
     const valuesChart = [
