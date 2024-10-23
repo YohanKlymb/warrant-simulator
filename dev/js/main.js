@@ -836,7 +836,7 @@ function renderOrUpdatePlot(chartId, data, layout, onlyRender = false, transitio
     // Adjust layout margin for large and small screens
     if (!("margin" in layout)) {
         const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 60 };
+        layout.margin = screenWidth <= 800 ? { r: 30, b: 30, t: 70 } : { l: 30, r: 30, b: 30, t: 20 };
     }
 
     // Ensure transition options are in the layout for smooth updates
@@ -883,6 +883,8 @@ function updateValuationWaterfallChart(data) {
 
     const layout = {
         showlegend: false,
+        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
+        paper_bgcolor: 'rgba(0,0,0,0)',  // Transparent paper background
         yaxis: {
             title: '', 
             showgrid: false,
@@ -929,6 +931,8 @@ function updateOwnershipDilutionChart(data) {
     const layout = {
         title: '',
         showlegend: false,
+        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
+        paper_bgcolor: 'rgba(0,0,0,0)',  // Transparent paper background
         yaxis: { 
             title: '', 
             showgrid: false,
@@ -973,6 +977,8 @@ function updateValuationVsDilutionChart(scenarioResults) {
     const yAxisMax = roundToSignificantDigits(Math.min(100, maxFounderOwnership));
 
     const layout = {
+        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
+        paper_bgcolor: 'rgba(0,0,0,0)',  // Transparent paper background
         xaxis: {
             showline: true, // This adds the bottom axis line
             linecolor: '#333333', // You can customize the color of the axis line
@@ -1036,6 +1042,8 @@ function updateNewSharesIssuedChart(data) {
     // Step 3: Define the layout for the pie chart
     const layout = {
         showlegend: false,
+        plot_bgcolor: 'rgba(0,0,0,0)',  // Transparent plot background
+        paper_bgcolor: 'rgba(0,0,0,0)',  // Transparent paper background
         margin: { t: 40, r: 40, b: 40, l: 40 },
     };
 
